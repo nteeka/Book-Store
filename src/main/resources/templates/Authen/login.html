@@ -1,0 +1,140 @@
+<div th:replace="/Layout/header.html"></div>
+
+<script src="https://kit.fontawesome.com/e38363a3ae.js"
+        crossorigin="anonymous"></script>
+
+<section class="vh-100">
+    <div id="errorDiv" class="alert alert-danger" th:if="${notLogin}">
+        <p style="text-align: center;" th:text="${notLogin}"></p>
+    </div>
+    <div class="container-fluid h-custom">
+        <div
+                class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img
+                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                        class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+
+                <div
+                        class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+
+
+                    <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+                    <button type="button" class="btn btn-primary btn-floating mx-1">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                    <a class="btn btn-primary btn-floating mx-1"
+                       href="/oauth2/authorization/google"><i class="fab fa-google"></i></a>
+                    <a class="btn btn-primary btn-floating mx-1" href="https://accounts.google.com/o/oauth2/auth?client_id=685934030215-9en9r0n0f2fsvqq77s2ttqhhhc1gjig1.apps.googleusercontent.com&redirect_uri=http://localhost:8080/Authen/oauth2/login&response_type=code&scope=openid%20profile%20email&access_type=offline"><i class="fab fa-google"></i></a>
+
+
+                    <button type="button" class="btn btn-primary btn-floating mx-1">
+                        <i class="fab fa-linkedin-in"></i>
+                    </button>
+                </div>
+
+                <div class="divider d-flex align-items-center my-4">
+                    <p class="text-center fw-bold mx-3 mb-0">Or</p>
+                </div>
+                <div th:if="${passwordReset}" class="alert alert-success">
+                    <p th:text="${passwordReset}"></p>
+                </div>
+                <div th:if="${loginFail}" class="alert alert-danger">
+                    <p th:text="${loginFail}"></p>
+                </div>
+                <form th:action="@{/user/login}" method="POST">
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <input name="username" id="form3Example3"
+                               class="form-control form-control-lg"
+                               placeholder="Enter a valid email address"
+                               th:value="${currentEmail}"
+                        />
+                        <label class="form-label"  for="form3Example3">Username</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <input name="password" type="password" id="form3Example4"
+                               class="form-control form-control-lg" placeholder="Enter password"
+                               th:value="${currentPassword}"
+                        />
+                        <label class="form-label" for="form3Example4">Password</label>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Checkbox -->
+                        <div class="form-check mb-0">
+                            <input class="form-check-input me-2" type="checkbox" value=""
+                                   id="form2Example3" /> <label class="form-check-label"
+                                                                for="form2Example3"> Remember me </label>
+                        </div>
+                        <a href="/Authen/forgotPass" class="text-body">Forgot
+                            password?</a>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">
+                            Don't have an account? <a href="/user/register"
+                                                      class="link-danger">Register</a>
+                        </p>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+    // Hàm để ẩn đi phần tử sau một khoảng thời gian
+    function hideElementAfterDelay(elementId, delay) {
+        setTimeout(function() {
+            var element = document.getElementById(elementId);
+            if (element) {
+                element.style.display = 'none';
+            }
+        }, delay);
+    }
+
+    // Gọi hàm để ẩn đi phần tử sau 3 giây (3000 milliseconds)
+    hideElementAfterDelay('errorDiv', 3000);
+</script>
+<style>
+    .divider:after, .divider:before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #eee;
+    }
+
+    .h-custom {
+        height: calc(100% - 73px);
+    }
+
+    @media ( max-width : 450px) {
+        .h-custom {
+            height: 100%;
+        }
+    }
+</style>
+
+<script th:inline="javascript">
+    /* Thời gian hiển thị thông báo lỗi (millisecond) */
+    var displayTime = 5000; // Ví dụ: 5000ms = 5 giây
+    /* Ẩn thông báo lỗi sau khi hết thời gian */
+    setTimeout(function() {
+        var loginErrorDiv = document.getElementById('loginFail');
+        if (loginErrorDiv) {
+            loginErrorDiv.style.display = 'none';
+        }
+    }, displayTime);
+</script>
+
+
+<div th:replace="/Layout/footer.html"></div>
