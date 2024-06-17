@@ -38,10 +38,14 @@
                 <div class="divider d-flex align-items-center my-4">
                     <p class="text-center fw-bold mx-3 mb-0">Or</p>
                 </div>
+
+                <div id="notifyRemindVerifyEmail" th:if="${notifyRemindVerifyEmail}" class="alert alert-danger">
+                    <p th:text="${notifyRemindVerifyEmail}"></p>
+                </div>
                 <div th:if="${passwordReset}" class="alert alert-success">
                     <p th:text="${passwordReset}"></p>
                 </div>
-                <div th:if="${loginFail}" class="alert alert-danger">
+                <div id="loginFail" th:if="${loginFail}" class="alert alert-danger">
                     <p th:text="${loginFail}"></p>
                 </div>
                 <form th:action="@{/user/login}" method="POST">
@@ -71,7 +75,7 @@
                                    id="form2Example3" /> <label class="form-check-label"
                                                                 for="form2Example3"> Remember me </label>
                         </div>
-                        <a href="/Authen/forgotPass" class="text-body">Forgot
+                        <a href="/user/forgotPass" class="text-body">Forgot
                             password?</a>
                     </div>
 
@@ -130,8 +134,13 @@
     /* Ẩn thông báo lỗi sau khi hết thời gian */
     setTimeout(function() {
         var loginErrorDiv = document.getElementById('loginFail');
+        var notifyRemindVerifyEmail = document.getElementById('notifyRemindVerifyEmail');
         if (loginErrorDiv) {
             loginErrorDiv.style.display = 'none';
+        }
+    }, displayTime);
+    if (notifyRemindVerifyEmail) {
+            notifyRemindVerifyEmail.style.display = 'none';
         }
     }, displayTime);
 </script>

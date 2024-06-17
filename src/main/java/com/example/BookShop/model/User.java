@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -38,7 +39,11 @@ public class User {
 
     private String password;
 
+    private Boolean verifyEmail;
 
+    private String resetToken;
+
+    private LocalDateTime resetTokenExpiration;
 
     @Column(columnDefinition = "boolean default false")
     private boolean isDeleted;
@@ -46,5 +51,12 @@ public class User {
     public User() {
         this.userId = RandomStringUtils.randomAlphanumeric(8);
         this.dateCreated = LocalDate.now();
+        this.verifyEmail = false;
     }
+
+    public boolean isResetTokenExpired(LocalDateTime check) {
+        return LocalDateTime.now().isAfter(check);
+    }
+
+
 }

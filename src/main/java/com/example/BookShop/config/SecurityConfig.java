@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,6 +39,8 @@ public class SecurityConfig {
                                         "/user/loginsuccess",
                                         "/user/check",
                                         "/user/register",
+                                        "/user/activeUser","/user/forgotPass","/user/forgotPassword",
+                                        "/user/forgotPass_token","/user/resetPassword",
                                         "/user/fail",
                                         "/user/logout",
                                         "/resources/**").permitAll()
@@ -59,6 +62,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return new CustomAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler failureHHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 
 //    @Bean

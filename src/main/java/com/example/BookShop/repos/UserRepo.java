@@ -15,4 +15,7 @@ public interface UserRepo extends JpaRepository<User, String> {
     @Query("SELECT s FROM User s WHERE s.email = :email AND s.isDeleted = false")
     User getEmail(@Param("email") String email);
 
+    @Query("SELECT s FROM User s WHERE s.resetToken = :resetToken AND s.isDeleted = false")
+    Optional<User> findByResetToken(@Param("resetToken") String resetToken);
+
 }

@@ -27,7 +27,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             session.removeAttribute("url_prior_login");
             redirectStrategy.sendRedirect(request, response, redirectUrl);
         } else {
-            redirectStrategy.sendRedirect(request, response, "/user/loginsuccess");
+            redirectStrategy.sendRedirect(request, response, "/user/loginsuccess"); //trang chủ
         }
     }
+
+
 }
