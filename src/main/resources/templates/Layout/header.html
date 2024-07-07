@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TK-Classroom</title>
-    <link rel="icon" th:href="@{'/image/getImage/' + 'logo-color.png'}" type="image/x-icon">
+<!--    <link rel="icon" th:href="@{'/image/getImage/' + 'logo-color.png'}" type="image/x-icon">-->
 
     <!-- Bootstrap CSS -->
 
@@ -190,27 +190,30 @@
                 </div>
             </div>
 
-            <div class="dropdown">
-                <a href="#">
-                    <img style="border-radius: 50%; width: 32px; height: 32px;"
-                        th:src="123" alt="Mô tả hình ảnh">
-                </a>
-
-
+            <div th:if="${session.loggedInUser != null}" class="dropdown">
+                <a th:if="${account != null and account.image != null }" href="#"><img
+                        style="border-radius: 50%; width: 32px; height: 32px;"
+                        th:src="${account.image}" alt="Mô tả hình ảnh"></a> <a
+                    th:unless="${account != null and account.image != null }" href="#"><img
+                    style="border-radius: 50%; width: 32px; height: 32px;"
+                    th:src="@{'/image/getImage/' + 'facebook default profile picture.jpg'}"
+                    alt="Mô tả hình ảnh"></a>
                 <div class="dropdown-content">
                     <a
-                            href="#">Quản
-                        lý tài khoản</a> <a href="#">Đổi mật khẩu</a> <a
-                        href="#">Đăng xuất</a>
+                            th:href="@{'/user/edit/' + ${session.loggedInUser.userId}}">Quản
+                        lý tài khoản</a> <a href="/user/changePassword">Đổi mật khẩu</a> <a
+                        href="/user/logout">Đăng xuất</a>
                 </div>
             </div>
-            <div class="dropdown">
+            <div th:if="${session.loggedInUser == null}" class="dropdown">
                 <a href="#" style="color: black;; width: content; height: auto;">Account</a>
                 <div class="dropdown-content">
-                    <a href="#">Login</a>
-                    <a href="#">Register</a>
+                    <a href="/user/login" th:if="${session.loggedInUser == null}">Login</a>
+                    <a href="/user/register" th:if="${session.loggedInUser == null}">Register</a>
                 </div>
             </div>
+
+
 
 
         </div>

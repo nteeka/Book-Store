@@ -20,7 +20,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         //HttpSession session = request.getSession();
         //session.setAttribute("errorLoginWithoutVerifyEmail", exception.getMessage());
-        redirectStrategy.sendRedirect(request, response, "/user/loginFail");
+        response.sendRedirect("/user/loginFail");
 
     }
 }

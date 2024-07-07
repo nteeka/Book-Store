@@ -12,17 +12,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired private UserRepo userRepo;
+    @Autowired
+    private UserRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.getEmail(email);
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        if (!userRepo.findByEmail(email).isPresent()) {
-            throw new UsernameNotFoundException("User not found with email: " + email);
-        }
-        if(!user.getVerifyEmail() )
+        if (!user.getVerifyEmail()) {
             throw new RuntimeException("Email not verified");
+        }
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())

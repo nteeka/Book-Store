@@ -5,11 +5,16 @@ import com.example.BookShop.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
     @Autowired UserRepo userRepo;
 
+    public Optional<User> getUserById(String id) {
+        return userRepo.findById(id);
+    }
 
     public User saveUser(User user) {
         return userRepo.save(user);
@@ -18,6 +23,9 @@ public class UserService {
     //check email in database
     public boolean isEmailTaken(String email) {
         return userRepo.findByEmail(email).isPresent();
+    }
+    public boolean isEmailTaken(String email,String id) {
+        return userRepo.findByEmailAndIdNot(email,id).isPresent();
     }
     //check mật khẩu có ký tự hoa
     public boolean containsUppercaseAndLowercase(String str) {

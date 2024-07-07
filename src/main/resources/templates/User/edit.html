@@ -1,0 +1,175 @@
+<div th:replace="/Layout/header.html"></div>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row flex-lg-nowrap">
+        <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+            <div class="card p-3">
+                <div class="e-navlist e-navlist--active-bg">
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link px-2 active" href="#"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Overview</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="https://www.bootdey.com/snippets/view/bs4-crud-users" target="__blank"><i class="fa fa-fw fa-th mr-1"></i><span>CRUD</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="https://www.bootdey.com/snippets/view/bs4-edit-profile-page" target="__blank"><i class="fa fa-fw fa-cog mr-1"></i><span>Settings</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="e-profile">
+                                <div class="row">
+                                    <div class="col-12 col-sm-auto mb-3">
+                                        <div class="mx-auto" style="width: 140px; height: 140px;">
+                                            <div class="d-flex justify-content-center align-items-center rounded" style="height: 100%; background-color: rgb(233, 236, 239);">
+                                                <img th:if="${account == null and account.image == null}" id="previewImage" style="max-width: 100%; max-height: 100%" alt="Image user"  th:src="@{'/image/getImage/' + 'facebook default profile picture.jpg'}" />
+                                                <img th:unless="${account == null and account.image == null} " id="previewImage" style="max-width: 100%; max-height: 100%" alt="Image user"  th:src="${account.image}" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                        <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                            <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap"><span th:text="${account.displayName}"></span></h4>
+                                            <p class="mb-0"><span th:text="${account.email}"></span></p>
+                                            <div class="text-muted"><small>Last seen 2 hours ago</small></div>
+                                            <div class="mt-2">
+                                                <!-- Hidden input file -->
+                                                <input name="file" type="file" id="fileInput" style="display: none;" onchange="uploadImage(event)">
+                                                <!-- Button to trigger file input -->
+                                                <button class="btn btn-primary" type="button" onclick="document.getElementById('fileInput').click()">
+                                                    <i class="fa fa-fw fa-camera"></i>
+                                                    <span>Change Photo</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-center text-sm-right">
+                                            <span class="badge badge-secondary">administrator</span>
+                                            <div class="text-muted"><small>Joined <span th:text="${account.dateCreated}"></span></small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="accountId" th:text="${account.userId}" style="display: none;"></div>
+                                <script>
+                                    function uploadImage(event) {
+                                        var fileInput = event.target.files[0];
+                                        var formData = new FormData();
+                                        formData.append('file', fileInput);
+
+                                        fetch('/user/saveImage', {
+                                            method: 'POST',
+                                            body: formData
+                                        })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                var accountId = document.getElementById('accountId').textContent;
+                                                window.location.href = '/user/edit/' + accountId; // Chuyển hướng trang
+                                            } else {
+                                                console.error('Failed to upload image');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                        });
+                                    }
+
+
+
+                                </script>
+
+
+
+
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                </ul>
+                                <div class="tab-content pt-3">
+                                    <div class="tab-pane active">
+                                        <form class="form" th:action="@{/user/edit/{id}(id=${account.userId})}" method="post">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label>Full Name</label>
+                                                                <input class="form-control" type="text" name="displayName" placeholder="Display Name" th:value="${account.displayName}">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label>Email</label>
+                                                                <input class="form-control" type="email" placeholder="Your email" name="email" th:value="${account.email}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label>Phone Number</label>
+                                                                <input class="form-control" type="number" placeholder="Your phone number" name="phoneNumber" th:value="${account.phoneNumber}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <div class="form-group">
+                                                                <label>About</label>
+                                                                <textarea th:text="${account.bio}" name="bio" class="form-control" rows="5" placeholder="My Bio" ></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col d-flex justify-content-end">
+                                                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="px-xl-3">
+                                <button class="btn btn-block btn-secondary">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title font-weight-bold">Support</h6>
+                            <p class="card-text">Get fast, free help from our friendly assistants.</p>
+                            <button type="button" class="btn btn-primary">Contact Us</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    body{
+
+        background:#f8f8f8
+    }
+</style>
+
+
+<div th:replace="/Layout/footer.html"></div>
